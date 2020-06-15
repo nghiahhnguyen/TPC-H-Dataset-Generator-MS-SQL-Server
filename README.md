@@ -27,11 +27,11 @@ After that, the bulk file will be created under the extension of .tbl.
 - Create the schema and load the data into the database. Remember to modify the path of the .tbl files at the end of this sql script before running it. Supply the username and password of your database into \<username\> and \<password\>:
 
 ```
-sqlcmd -S localhost -U <username> -P <password> -i tpc-h.sql
+sqlcmd -S <server_ip> -U <username> -P <password> -i tpc-h.sql
 ```
 
 - Create primary keys and foreign keys. If you ran into errors such as not being able create primary key on nullable column, you could try looking inside the script and running the lines involving altering the columns for primary key to NOT NULL:
 
 ```
-sqlcmd -S localhost -U <username> -P <password> -i fk.sql
+sqlcmd -S <server_ip> -U <username> -P <password> -i fk.sql
 ```
