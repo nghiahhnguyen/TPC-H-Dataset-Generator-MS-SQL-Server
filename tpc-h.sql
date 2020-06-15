@@ -1,8 +1,11 @@
-CREATE DATABASE [TPCH] ON  PRIMARY
+CREATE DATABASE [TPCH]
+GO
+
+USE TPCH
 GO
 
 CREATE TABLE [dbo].[customer](
-    [C_CustKey] [int] NULL,
+    [C_CustKey] [int] NOT NULL,
     [C_Name] [varchar](64) NULL,
     [C_Address] [varchar](64) NULL,
     [C_NationKey] [int] NULL,
@@ -14,10 +17,10 @@ CREATE TABLE [dbo].[customer](
 ) ON [PRIMARY]
 GO
 CREATE TABLE [dbo].[lineitem](
-    [L_OrderKey] [int] NULL,
+    [L_OrderKey] [int] NOT NULL,
     [L_PartKey] [int] NULL,
     [L_SuppKey] [int] NULL,
-    [L_LineNumber] [int] NULL,
+    [L_LineNumber] [int] NOT NULL,
     [L_Quantity] [int] NULL,
     [L_ExtendedPrice] [decimal](13, 2) NULL,
     [L_Discount] [decimal](13, 2) NULL,
@@ -34,7 +37,7 @@ CREATE TABLE [dbo].[lineitem](
 ) ON [PRIMARY]
 GO
 CREATE TABLE [dbo].[nation](
-    [N_NationKey] [int] NULL,
+    [N_NationKey] [int] NOT NULL,
     [N_Name] [varchar](64) NULL,
     [N_RegionKey] [int] NULL,
     [N_Comment] [varchar](160) NULL,
@@ -42,7 +45,7 @@ CREATE TABLE [dbo].[nation](
 ) ON [PRIMARY]
 GO
 CREATE TABLE [dbo].[orders](
-    [O_OrderKey] [int] NULL,
+    [O_OrderKey] [int] NOT NULL,
     [O_CustKey] [int] NULL,
     [O_OrderStatus] [varchar](64) NULL,
     [O_TotalPrice] [decimal](13, 2) NULL,
@@ -55,7 +58,7 @@ CREATE TABLE [dbo].[orders](
 ) ON [PRIMARY]
 GO
 CREATE TABLE [dbo].[part](
-    [P_PartKey] [int] NULL,
+    [P_PartKey] [int] NOT NULL,
     [P_Name] [varchar](64) NULL,
     [P_Mfgr] [varchar](64) NULL,
     [P_Brand] [varchar](64) NULL,
@@ -68,8 +71,8 @@ CREATE TABLE [dbo].[part](
 ) ON [PRIMARY]
 GO
 CREATE TABLE [dbo].[partsupp](
-    [PS_PartKey] [int] NULL,
-    [PS_SuppKey] [int] NULL,
+    [PS_PartKey] [int] NOT NULL,
+    [PS_SuppKey] [int] NOT NULL,
     [PS_AvailQty] [int] NULL,
     [PS_SupplyCost] [decimal](13, 2) NULL,
     [PS_Comment] [varchar](200) NULL,
@@ -77,14 +80,14 @@ CREATE TABLE [dbo].[partsupp](
 ) ON [PRIMARY]
 GO
 CREATE TABLE [dbo].[region](
-    [R_RegionKey] [int] NULL,
+    [R_RegionKey] [int] NOT NULL,
     [R_Name] [varchar](64) NULL,
     [R_Comment] [varchar](160) NULL,
     [skip] [varchar](64) NULL
 ) ON [PRIMARY]
 GO
 CREATE TABLE [dbo].[supplier](
-    [S_SuppKey] [int] NULL,
+    [S_SuppKey] [int] NOT NULL,
     [S_Name] [varchar](64) NULL,
     [S_Address] [varchar](64) NULL,
     [S_NationKey] [int] NULL,
