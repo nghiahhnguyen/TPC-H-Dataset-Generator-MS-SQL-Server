@@ -23,4 +23,5 @@ Create the schema and load the data into the database. Remember to modify the pa
 ```sqlcmd -S localhost -U <username> -P <password> -i tpc-h.sql```
 
 Create primary keys and foreign keys. If you ran into errors such as not being able create primary key on nullable column, you could try looking inside the script and running the lines involving altering the columns for primary key to NOT NULL:
+
 ```sqlcmd -S localhost -U <username> -P <password> -i fk.sql```
