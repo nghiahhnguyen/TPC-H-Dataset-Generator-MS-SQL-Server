@@ -4,6 +4,9 @@
 -- Approved February 1998
 :x
 :o
+set showplan_text on;
+go
+
 select
 	ps_partkey,
 	sum(ps_supplycost * ps_availqty) as value
@@ -31,4 +34,4 @@ group by
 		)
 order by
 	value desc;
-:n -1
+go

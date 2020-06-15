@@ -4,6 +4,9 @@
 -- Approved February 1998
 :x
 :o
+set showplan_text on;
+go
+
 select
 	100.00 * sum(case
 		when p_type like 'PROMO%'
@@ -15,6 +18,5 @@ from
 	part
 where
 	l_partkey = p_partkey
-	and l_shipdate >= date ':1'
-	and l_shipdate < date ':1' + interval '1' month;
-:n -1
+	and l_shipdate >= cast(':1' as datetime)
+	and l_shipdate < dateadd(mm, 1, cast(':1' as datetime))

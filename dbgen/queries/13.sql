@@ -4,6 +4,9 @@
 -- Approved February 1998
 :x
 :o
+set showplan_text on;
+go
+
 select
 	c_count,
 	count(*) as custdist
@@ -24,4 +27,3 @@ group by
 order by
 	custdist desc,
 	c_count desc;
-:n -1

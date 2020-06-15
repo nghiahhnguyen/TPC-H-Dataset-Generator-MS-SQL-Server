@@ -4,7 +4,11 @@
 -- Approved February 1998
 :x
 :o
+set showplan_text on;
+go
+
 select
+top 100
 	s_name,
 	count(*) as numwait
 from
@@ -43,4 +47,3 @@ group by
 order by
 	numwait desc,
 	s_name;
-:n 100

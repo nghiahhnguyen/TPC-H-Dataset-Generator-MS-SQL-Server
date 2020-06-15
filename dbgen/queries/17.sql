@@ -4,6 +4,9 @@
 -- Approved February 1998
 :x
 :o
+set showplan_text on;
+go
+
 select
 	sum(l_extendedprice) / 7.0 as avg_yearly
 from
@@ -21,4 +24,3 @@ where
 		where
 			l_partkey = p_partkey
 	);
-:n -1

@@ -4,7 +4,11 @@
 -- Approved February 1998
 :x
 :o
+set showplan_text on;
+go
+
 select
+top 100
 	c_name,
 	c_custkey,
 	o_orderkey,
@@ -36,4 +40,3 @@ group by
 order by
 	o_totalprice desc,
 	o_orderdate;
-:n 100

@@ -4,14 +4,17 @@
 -- Approved February 1998
 :x
 :o
+set showplan_text on;
+go
+
 select
 	o_orderpriority,
 	count(*) as order_count
 from
 	orders
 where
-	o_orderdate >= date ':1'
-	and o_orderdate < date ':1' + interval '3' month
+	o_orderdate >= cast(':1' as datetime)
+	and o_orderdate < '3' month dateadd(mm, '3', cast(':1' as datetime))
 	and exists (
 		select
 			*
@@ -25,4 +28,3 @@ group by
 	o_orderpriority
 order by
 	o_orderpriority;
-:n -1

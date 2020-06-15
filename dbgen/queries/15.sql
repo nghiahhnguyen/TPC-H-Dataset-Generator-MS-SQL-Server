@@ -3,6 +3,9 @@
 -- Functional Query Definition
 -- Approved February 1998
 :x
+set showplan_text on;
+go
+
 create view revenue:s (supplier_no, total_revenue) as
 	select
 		l_suppkey,
@@ -10,11 +13,11 @@ create view revenue:s (supplier_no, total_revenue) as
 	from
 		lineitem
 	where
-		l_shipdate >= date ':1'
-		and l_shipdate < date ':1' + interval '3' month
+		l_shipdate >= cast(':1' as datetime)
+		and l_shipdate < dateadd(mm, 3, cast(':1' as datetime))
 	group by
 		l_suppkey;
-
+go
 :o
 select
 	s_suppkey,
@@ -37,4 +40,3 @@ order by
 	s_suppkey;
 
 drop view revenue:s;
-:n -1

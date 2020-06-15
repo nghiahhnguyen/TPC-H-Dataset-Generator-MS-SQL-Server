@@ -4,6 +4,9 @@
 -- Approved February 1998
 :x
 :o
+set showplan_text on;
+go
+
 select
 	l_shipmode,
 	sum(case
@@ -26,10 +29,9 @@ where
 	and l_shipmode in (':1', ':2')
 	and l_commitdate < l_receiptdate
 	and l_shipdate < l_commitdate
-	and l_receiptdate >= date ':3'
-	and l_receiptdate < date ':3' + interval '1' year
+	and l_receiptdate >= cast(':3' as datetime)
+	and l_receiptdate < dateadd(yy, 1, cast(':3' as datetime))
 group by
 	l_shipmode
 order by
 	l_shipmode;
-:n -1

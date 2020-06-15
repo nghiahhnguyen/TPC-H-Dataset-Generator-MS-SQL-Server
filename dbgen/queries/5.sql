@@ -4,6 +4,9 @@
 -- Approved February 1998
 :x
 :o
+set showplan_text on;
+go
+
 select
 	n_name,
 	sum(l_extendedprice * (1 - l_discount)) as revenue
@@ -22,10 +25,10 @@ where
 	and s_nationkey = n_nationkey
 	and n_regionkey = r_regionkey
 	and r_name = ':1'
-	and o_orderdate >= date ':2'
-	and o_orderdate < date ':2' + interval '1' year
+	and o_orderdate >= cast(':2' as datetime)
+	and o_orderdate < dateadd(yy, 1, cast(':2' as datetime)
 group by
 	n_name
 order by
 	revenue desc;
-:n -1
+go

@@ -4,6 +4,9 @@
 -- Approved February 1998
 :x
 :o
+set showplan_text on;
+go
+
 select
 	o_year,
 	sum(case
@@ -13,7 +16,7 @@ select
 from
 	(
 		select
-			extract(year from o_orderdate) as o_year,
+			datepart(yy, o_orderdate) as o_year,
 			l_extendedprice * (1 - l_discount) as volume,
 			n2.n_name as nation
 		from
@@ -34,11 +37,11 @@ from
 			and n1.n_regionkey = r_regionkey
 			and r_name = ':2'
 			and s_nationkey = n2.n_nationkey
-			and o_orderdate between date '1995-01-01' and date '1996-12-31'
+			and o_orderdate between cast('1995-01-01' as datetime) and cast('1996-12-31' as datetime)
 			and p_type = ':3'
 	) as all_nations
 group by
 	o_year
 order by
 	o_year;
-:n -1
+go

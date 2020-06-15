@@ -4,7 +4,11 @@
 -- Approved February 1998
 :x
 :o
+set showplan_text on;
+go
+
 select
+top 100
 	s_acctbal,
 	s_name,
 	n_name,
@@ -47,4 +51,3 @@ order by
 	n_name,
 	s_name,
 	p_partkey;
-:n 100

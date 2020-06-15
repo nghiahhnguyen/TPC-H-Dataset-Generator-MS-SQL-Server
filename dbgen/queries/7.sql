@@ -4,6 +4,9 @@
 -- Approved February 1998
 :x
 :o
+set showplan_text on;
+go
+
 select
 	supp_nation,
 	cust_nation,
@@ -14,7 +17,7 @@ from
 		select
 			n1.n_name as supp_nation,
 			n2.n_name as cust_nation,
-			extract(year from l_shipdate) as l_year,
+			datepart(yy, l_shipdate) as l_year,
 			l_extendedprice * (1 - l_discount) as volume
 		from
 			supplier,
@@ -33,7 +36,7 @@ from
 				(n1.n_name = ':1' and n2.n_name = ':2')
 				or (n1.n_name = ':2' and n2.n_name = ':1')
 			)
-			and l_shipdate between date '1995-01-01' and date '1996-12-31'
+			and l_shipdate between cast('1995-01-01' as datetime) and cast('1996-12-31' as datetime)
 	) as shipping
 group by
 	supp_nation,
@@ -43,4 +46,4 @@ order by
 	supp_nation,
 	cust_nation,
 	l_year;
-:n -1
+go

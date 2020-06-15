@@ -4,7 +4,11 @@
 -- Approved February 1998
 :x
 :o
+set showplan_text on;
+go
+
 select
+top 10
 	l_orderkey,
 	sum(l_extendedprice * (1 - l_discount)) as revenue,
 	o_orderdate,
@@ -17,8 +21,8 @@ where
 	c_mktsegment = ':1'
 	and c_custkey = o_custkey
 	and l_orderkey = o_orderkey
-	and o_orderdate < date ':2'
-	and l_shipdate > date ':2'
+	and o_orderdate < cast(':2' as datetime)
+	and l_shipdate > cast(':2' as datetime)
 group by
 	l_orderkey,
 	o_orderdate,
@@ -26,4 +30,3 @@ group by
 order by
 	revenue desc,
 	o_orderdate;
-:n 10
