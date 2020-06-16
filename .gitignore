@@ -1,2 +1,4 @@
 *.o
 *.tbl
+*.o
+generated_queries/
