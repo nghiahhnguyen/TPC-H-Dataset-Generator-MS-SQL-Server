@@ -46,7 +46,7 @@ python3 gen_queries.py -u <db admin> -p <password> --num_queries <number of quer
 ```
 The result is stored in `dbgen/generated_queries`
 
-Note that I am using these templates to generate shoplan, so if you do not want to use showplan, you can remove
+Note that I am using these templates to generate showplan, so if you do not want to use showplan, you can remove
 ```
 set showplan_all on;
 go
