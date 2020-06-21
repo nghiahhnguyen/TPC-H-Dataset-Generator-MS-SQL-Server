@@ -19,7 +19,7 @@ make
       of 1, 10, 100, 300, 1000, 3000, 10000, 30000, 100000. If you want more option, try to take a look at dbgen/README:
 
 ```
-dbgen -s <scale>
+./dbgen -s <scale>
 ```
 
 After that, the bulk file will be created under the extension of .tbl.
