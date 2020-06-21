@@ -3,6 +3,8 @@
 TPC-H Data and Query Generator for Microsoft SQL Server on Linux. This repo was modified from version 2.18 of TPC-H benchmark. The modification is created with the purpose of introducing better support for loading this benchmark in Microsoft SQL on Linux.
 
 ## Getting started
+
+### Loading the database from TPC-H
 - Move to main directory for generation related operations:
  
  ```
@@ -35,3 +37,12 @@ sqlcmd -S <server_ip> -U <username> -P <password> -i tpc-h.sql
 ```
 sqlcmd -S <server_ip> -U <username> -P <password> -i fk.sql
 ```
+- In case you need to start or stop the MSSQL Service, use `bash start_mssql.sh` and `bash stop_mssql.sh`
+
+### Generating the queries
+```
+cd ..
+python3 gen_queries.py -u <db admin> -p <password> --num_queries <number of queries per template> --test_split <the percentage of templates to use in test set>
+```
+The result is stored in `dbgen/generated_queries`
+
