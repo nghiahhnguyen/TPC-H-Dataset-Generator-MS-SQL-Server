@@ -2,3 +2,4 @@
 *.tbl
 *.o
 generated_queries/
+generated_showplans/

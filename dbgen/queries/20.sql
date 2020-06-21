@@ -4,7 +4,7 @@
 -- Approved February 1998
 :x
 :o
-set showplan_text on;
+set showplan_all on;
 go
 
 select

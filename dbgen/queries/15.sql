@@ -3,7 +3,7 @@
 -- Functional Query Definition
 -- Approved February 1998
 :x
-set showplan_text on;
+set showplan_all on;
 go
 
 create view revenue:s (supplier_no, total_revenue) as

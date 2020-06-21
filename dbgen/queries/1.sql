@@ -4,8 +4,8 @@
 -- Approved February 1998
 :x
 :o
-set showplan_text ON;
-go;
+set showplan_all on;
+go
 
 select
 	l_returnflag,
