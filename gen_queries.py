@@ -55,6 +55,7 @@ if __name__ == "__main__":
         "--server", help="The server to run sqlcmd from", default="localhost")
     arg_parser.add_argument(
         "--test_split", help="The percentage of templates to go into test set", default=0.2, type=float)
+    arg_parser.add_argument("--generate_queries", action="store_true", default=True)
     arg_parser.add_argument("--showplan", action="store_true", default=True)
     args = arg_parser.parse_args()
 
@@ -64,10 +65,11 @@ if __name__ == "__main__":
     test_split = int(args.test_split * NUM_TEMPLATES)
     test_indices = indices[:test_split]
     train_indices = indices[test_split:]
-    # generate queries
-    generate_queries(train_indices, args, "train")
-    generate_queries(test_indices, args, "test")
-
+    
+    if args.generate_queries:
+        # generate queries
+        generate_queries(train_indices, args, "train")
+        generate_queries(test_indices, args, "test")
     if args.showplan:
         # generate showplans
         generate_showplans(train_indices, args, "train")

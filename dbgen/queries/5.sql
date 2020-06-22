@@ -26,7 +26,7 @@ where
 	and n_regionkey = r_regionkey
 	and r_name = ':1'
 	and o_orderdate >= cast(':2' as datetime)
-	and o_orderdate < dateadd(yy, 1, cast(':2' as datetime)
+	and o_orderdate < dateadd(yy, 1, cast(':2' as datetime))
 group by
 	n_name
 order by
