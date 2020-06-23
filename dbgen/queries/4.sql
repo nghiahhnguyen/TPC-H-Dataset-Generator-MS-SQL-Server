@@ -14,7 +14,7 @@ from
 	orders
 where
 	o_orderdate >= cast(':1' as datetime)
-	and o_orderdate < dateadd(mm, '3', cast(':1' as datetime))
+	and o_orderdate < dateadd(mm, 3, cast(':1' as datetime))
 	and exists (
 		select
 			*
