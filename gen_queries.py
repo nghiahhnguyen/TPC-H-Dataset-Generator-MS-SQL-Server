@@ -9,7 +9,7 @@ from pathlib import Path
 """For TPC-H, we randomly sampled 80% of the templates into the training group, then put the remaining 20% of the templates into the test group (modulo rounding). Then we randomly sampled these templates with replacement until we'd reached the appropriate number of queries in each group."""
 
 
-def generate_queries(indices,  args, split, directory='.'):
+def generate_queries(indices, args, split, directory='.'):
     """Generate queries from the list of allowed templates"""
     print(f"Template for {split}: ", end='')
     for template in indices:
@@ -19,9 +19,9 @@ def generate_queries(indices,  args, split, directory='.'):
             file_path = directory+f"{str(count)}.sql"
             Path(directory).mkdir(parents=True, exist_ok=True)
             subprocess.call('touch ' + file_path, shell=True)
-            shell_cmd = './qgen ' + str(template) + ' > ' + file_path
-            subprocess.call(shell_cmd, shell=True)
+            shell_cmd = f'./qgen {str(template)} -r {(count + 1) * 100} -s 1000 > {file_path}'
             # print(shell_cmd)
+            subprocess.call(shell_cmd, shell=True)
     print()
 
 
@@ -36,9 +36,8 @@ def generate_showplans(indices, args, split, directory='.'):
             Path(directory).mkdir(parents=True, exist_ok=True)
             subprocess.call('touch ' + output_path, shell=True)
             shell_cmd = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d TPCH -i {input_path} -o {output_path}'
-            subprocess.call(shell_cmd, shell=True)
             # print(shell_cmd)
-
+            subprocess.call(shell_cmd, shell=True)
 
 if __name__ == "__main__":
     os.chdir('./dbgen')
