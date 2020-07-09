@@ -6,7 +6,9 @@ import random
 from pathlib import Path
 
 
-"""For TPC-H, we randomly sampled 80% of the templates into the training group, then put the remaining 20% of the templates into the test group (modulo rounding). Then we randomly sampled these templates with replacement until we'd reached the appropriate number of queries in each group."""
+"""For TPC-H, we randomly sampled 80% of the templates into the training group, 
+then put the remaining 20% of the templates into the test group (modulo rounding). 
+Then we randomly sampled these templates with replacement until we'd reached the appropriate number of queries in each group."""
 
 
 def generate_queries(indices, args, split, directory='.'):
