@@ -35,23 +35,23 @@ def generate_configuration(args):
 
 def generate_showplans(indices, args, split, table_column_dict, directory='.'):
     """Generate showplans from the list of queries"""
+    print(f"Current split: {split}")
     count_db_indices = 0
     for table_name, column_list in table_column_dict.items():
         for column_name in column_list:
             command = f'sqlcmd -s {args.server} -u {args.user} -p {args.password} -d tpch -q "CREATE INDEX auto_idx_{count_db_indices} ON {table_name}.{column_name}'
             count_db_indices += 1
-
             for template in indices:
                 for count in range(args.num_queries):
                     input_directory = f"./generated_queries/{split}/{template}/"
                     input_path = input_directory+f"{str(count)}.sql"
-                    directory = f"./generated_equivalent_showplans/{split}/{template}/{count_db_indices}"
+                    directory = f"./generated_equivalent_showplans/{split}/template_{template}/config_{count_db_indices}/"
                     output_path = directory + str(count) + '.txt'
                     Path(directory).mkdir(parents=True, exist_ok=True)
                     subprocess.call('touch ' + output_path, shell=True)
-                    shell_cmd = f'sqlcmd -s {args.server} -u {args.user} -p {args.password} -d tpch -i {input_path} -o {output_path}'
+                    shell_cmd = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d tpch -i {input_path} -o {output_path}'
                     print(shell_cmd)
-                    # subprocess.call(shell_cmd, shell=True)
+                    subprocess.call(shell_cmd, shell=True)
 
 
 if __name__ == "__main__":
@@ -60,7 +60,7 @@ if __name__ == "__main__":
         "-u", "--user", help="db administrator", default="SA")
     arg_parser.add_argument("-p", "--password", help="password")
     arg_parser.add_argument("--num_queries",
-                            help="Number of queries to generate per template", type=int)
+                            help="Number of queries to generate per template", default=10, type=int)
     arg_parser.add_argument(
         "--server", help="The server to run sqlcmd from", default="localhost")
     arg_parser.add_argument(
