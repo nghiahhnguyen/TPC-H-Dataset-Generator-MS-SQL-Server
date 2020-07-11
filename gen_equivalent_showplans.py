@@ -89,6 +89,6 @@ if __name__ == "__main__":
 
     if args.showplan:
         # generate showplans
-        generate_showplans(train_indices, args, "train", table_column_dict)
-        generate_showplans(dev_indices, args, "dev", table_column_dict)
+        # generate_showplans(train_indices, args, "train", table_column_dict)
+        # generate_showplans(dev_indices, args, "dev", table_column_dict)
         generate_showplans(test_indices, args, "test", table_column_dict)
