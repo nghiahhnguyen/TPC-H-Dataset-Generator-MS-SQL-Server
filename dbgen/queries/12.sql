@@ -4,6 +4,7 @@
 -- Approved February 1998
 :x
 :o
+
 set showplan_all on;
 go
 
@@ -30,7 +31,7 @@ where
 	and l_commitdate < l_receiptdate
 	and l_shipdate < l_commitdate
 	and l_receiptdate >= cast(':3' as datetime)
-	and l_receiptdate < dateadd(yy, 1, cast(':3' as datetime))
+	and l_receiptdate < dateadd(mm, 1, cast(':3' as datetime))
 group by
 	l_shipmode
 order by
