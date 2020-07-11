@@ -5,3 +5,4 @@ generated_queries/
 generated_equivalent_showplans/
 generated_showplans/
 generated_filtered_queries/
+*.pyc

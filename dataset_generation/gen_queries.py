@@ -6,9 +6,11 @@ import random
 from pathlib import Path
 
 
-"""For TPC-H, we randomly sampled 80% of the templates into the training group, 
+"""
+For TPC-H, we randomly sampled 80% of the templates into the training group, 
 then put the remaining 20% of the templates into the test group (modulo rounding). 
-Then we randomly sampled these templates with replacement until we'd reached the appropriate number of queries in each group."""
+Then we randomly sampled these templates with replacement until we'd reached the appropriate number of queries in each group.
+"""
 
 
 def generate_queries(indices, args, split, directory='.'):
@@ -42,7 +44,7 @@ def generate_showplans(indices, args, split, directory='.'):
             subprocess.call(shell_cmd, shell=True)
 
 if __name__ == "__main__":
-    os.chdir('./dbgen')
+    os.chdir('../dbgen')
     print(os.getcwd())
     NUM_TEMPLATES = 22
 
