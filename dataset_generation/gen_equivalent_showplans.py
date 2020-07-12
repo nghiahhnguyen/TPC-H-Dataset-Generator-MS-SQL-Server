@@ -13,11 +13,13 @@ def generate_showplans(indices, args, split, table_column_dict, directory='.'):
     print(f"Current split: {split}")
     count_db_indices = 0
     # drop all indices
-    subprocess.call(f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d tpch -i ../drop_all_indices.sql');
+    subprocess.call(
+        f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d tpch -i ../drop_all_indices.sql')
     # iterate through columns and create index on them
     for table_name, column_list in table_column_dict.items():
         for column_name in column_list:
             command = f'sqlcmd -s {args.server} -u {args.user} -p {args.password} -d tpch -q "CREATE INDEX auto_idx_{count_db_indices} ON {table_name}.{column_name}'
+            subprocess.call(command, shell=True)
             count_db_indices += 1
             for template in indices:
                 for count in range(args.num_queries):
@@ -66,7 +68,7 @@ if __name__ == "__main__":
     train_indices = indices[dev_split:]
 
     # if args.showplan:
-        # generate showplans
-        # generate_showplans(train_indices, args, "train", table_column_dict)
-        # generate_showplans(dev_indices, args, "dev", table_column_dict)
-        # generate_showplans(test_indices, args, "test", table_column_dict)
+    # generate showplans
+    # generate_showplans(train_indices, args, "train", table_column_dict)
+    # generate_showplans(dev_indices, args, "dev", table_column_dict)
+    # generate_showplans(test_indices, args, "test", table_column_dict)

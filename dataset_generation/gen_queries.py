@@ -5,6 +5,8 @@ import subprocess
 import random
 from pathlib import Path
 
+from .utils import extract_tables_columns
+
 
 """
 For TPC-H, we randomly sampled 80% of the templates into the training group, 
@@ -29,6 +31,11 @@ def generate_queries(indices, args, split, directory='.'):
     print()
 
 
+def create_filterted_queries(args, input_path):
+    table_column_dict = extract_tables_columns(args.schema_path)
+    
+    
+
 def generate_showplans(indices, args, split, directory='.'):
     """Generate showplans from the list of queries"""
     for template in indices:
@@ -36,6 +43,8 @@ def generate_showplans(indices, args, split, directory='.'):
             input_directory = f"./generated_queries/{split}/{template}/"
             input_path = input_directory+f"{str(count)}.sql"
             directory = f"./generated_showplans/{split}/{template}/"
+
+
             output_path = directory + str(count) + '.txt'
             Path(directory).mkdir(parents=True, exist_ok=True)
             subprocess.call('touch ' + output_path, shell=True)
