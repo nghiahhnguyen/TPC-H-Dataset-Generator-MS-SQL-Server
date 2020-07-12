@@ -12,9 +12,10 @@ def generate_showplans(indices, args, split, table_column_dict, directory='.'):
     """Generate showplans from the list of queries"""
     print(f"Current split: {split}")
     count_db_indices = 0
+
     # drop all indices
     subprocess.call(
-        f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d tpch -i ../drop_all_indices.sql')
+        f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d tpch -i ../drop_all_indices.sql', shell=True)
     # iterate through columns and create index on them
     for table_name, column_list in table_column_dict.items():
         for column_name in column_list:
@@ -52,7 +53,7 @@ if __name__ == "__main__":
         "--schema_path", help="Path to the schema", default="../tpc-h.sql")
     args = arg_parser.parse_args()
 
-    table_column_dict = extract_tables_columns(args)
+    table_column_dict = extract_tables_columns(args.schema_path)
 
     os.chdir('../dbgen')
     print(os.getcwd())
@@ -67,8 +68,8 @@ if __name__ == "__main__":
     dev_indices = indices[test_split:dev_split]
     train_indices = indices[dev_split:]
 
-    # if args.showplan:
     # generate showplans
-    # generate_showplans(train_indices, args, "train", table_column_dict)
-    # generate_showplans(dev_indices, args, "dev", table_column_dict)
-    # generate_showplans(test_indices, args, "test", table_column_dict)
+    if args.showplan:
+        generate_showplans(train_indices, args, "train", table_column_dict)
+        generate_showplans(dev_indices, args, "dev", table_column_dict)
+        generate_showplans(test_indices, args, "test", table_column_dict)

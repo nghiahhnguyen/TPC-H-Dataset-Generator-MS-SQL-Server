@@ -33,8 +33,13 @@ def generate_queries(indices, args, split, directory='.'):
 
 def create_filterted_queries(args, input_path):
     table_column_dict = extract_tables_columns(args.schema_path)
-    
-    
+    with open(input_path, 'r') as f:
+        string = f.read()
+        select_from = string.split('where')[0]
+        from_clause = select_from.split('from')[0]
+        tables = select_from.split(',')
+        # for table in tables:
+        #     for t
 
 def generate_showplans(indices, args, split, directory='.'):
     """Generate showplans from the list of queries"""
