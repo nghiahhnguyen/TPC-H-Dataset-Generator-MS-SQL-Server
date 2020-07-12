@@ -1,3 +1,6 @@
+use tpch;
+go
+
 select i.[name] as index_name,
     substring(column_names, 1, len(column_names)-1) as [columns],
     case when i.[type] = 1 then 'Clustered index'

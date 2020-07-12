@@ -31,16 +31,6 @@ def generate_queries(indices, args, split, directory='.'):
     print()
 
 
-def create_filterted_queries(args, input_path):
-    table_column_dict = extract_tables_columns(args.schema_path)
-    with open(input_path, 'r') as f:
-        string = f.read()
-        select_from = string.split('where')[0]
-        from_clause = select_from.split('from')[0]
-        tables = select_from.split(',')
-        # for table in tables:
-        #     for t
-
 def generate_showplans(indices, args, split, directory='.'):
     """Generate showplans from the list of queries"""
     for template in indices:
@@ -49,13 +39,13 @@ def generate_showplans(indices, args, split, directory='.'):
             input_path = input_directory+f"{str(count)}.sql"
             directory = f"./generated_showplans/{split}/{template}/"
 
-
             output_path = directory + str(count) + '.txt'
             Path(directory).mkdir(parents=True, exist_ok=True)
             subprocess.call('touch ' + output_path, shell=True)
             shell_cmd = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d TPCH -i {input_path} -o {output_path}'
             # print(shell_cmd)
             subprocess.call(shell_cmd, shell=True)
+
 
 if __name__ == "__main__":
     os.chdir('../dbgen')
@@ -74,7 +64,8 @@ if __name__ == "__main__":
         "--test_split", help="The percentage of templates to go into test set", default=0.2, type=float)
     arg_parser.add_argument(
         "--dev_split", help="The percentage of templates to go into dev set", default=0.2, type=float)
-    arg_parser.add_argument("--generate_queries", action="store_true", default=True)
+    arg_parser.add_argument("--generate_queries",
+                            action="store_true", default=True)
     arg_parser.add_argument("--showplan", action="store_true", default=True)
     args = arg_parser.parse_args()
 
@@ -86,7 +77,7 @@ if __name__ == "__main__":
     test_indices = indices[:test_split]
     dev_indices = indices[test_split:dev_split]
     train_indices = indices[dev_split:]
-    
+
     if args.generate_queries:
         # generate queries
         generate_queries(train_indices, args, "train")
