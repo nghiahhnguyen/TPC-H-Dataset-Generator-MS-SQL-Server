@@ -22,7 +22,7 @@ def generate_queries(indices, args, split, directory='.'):
         print(template, end=' ')
         for count in range(args.num_queries):
             directory = f"./generated_queries/{split}/{template}/"
-            file_path = directory+f"{str(count)}_{args.filter}.sql"
+            file_path = directory+f"{str(count)}.sql"
             Path(directory).mkdir(parents=True, exist_ok=True)
             subprocess.call('touch ' + file_path, shell=True)
             shell_cmd = f'./qgen {str(template)} -r {(count + 1) * 100} -s 1000 > {file_path}'
@@ -67,7 +67,6 @@ if __name__ == "__main__":
     arg_parser.add_argument("--generate_queries",
                             action="store_true", default=False)
     arg_parser.add_argument("--showplan", action="store_true", default=False)
-    arg_parser.add_argument("--filter", type=int)
     args = arg_parser.parse_args()
 
     indices = list(range(1, NUM_TEMPLATES + 1))  # 22 query templates
