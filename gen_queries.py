@@ -48,7 +48,7 @@ def generate_showplans(indices, args, split, directory='.'):
 
 
 if __name__ == "__main__":
-    os.chdir('../dbgen')
+    os.chdir('./dbgen')
     print(os.getcwd())
     NUM_TEMPLATES = 22
 
