@@ -1,2 +1,0 @@
-Msg 8116, Level 16, State 1, Server nghia-Lenovo-ideapad-Y700-14ISK, Line 2
-Argument data type varchar is invalid for argument 2 of dateadd function.

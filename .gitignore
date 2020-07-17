@@ -8,3 +8,6 @@ generated_filtered_queries/
 *.pyc
 .azuredatastudio/
 .vscode/
+generated_showplans/*
+generated_shoplans/*
+generated_showplans/*

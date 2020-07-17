@@ -120,6 +120,11 @@ def drop_all_indexes(table_column_dict, args):
             count_drop_db_indexes += 1
 
 
+def run_shell_cmd(args, input_path, output_path, filter_idx):
+    shell_cmd = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d tpch -i {input_path}_{filter_idx}.sql -o {output_path}_{filter_idx}.txt'
+    print(shell_cmd)
+    subprocess.call(shell_cmd, shell=True)
+
 def generate_showplans(indices, args, split, table_column_dict, count_db_indexes, directory='.'):
     """Generate showplans from the list of queries"""
     print(f"Current split: {split}")
@@ -131,24 +136,8 @@ def generate_showplans(indices, args, split, table_column_dict, count_db_indexes
             directory = f"../dataset_generation/generated_equivalent_showplans/{split}/template_{template}/config_{count_db_indexes}/"
             output_path = directory + str(count)
             Path(directory).mkdir(parents=True, exist_ok=True)
-            subprocess.call('touch ' + output_path, shell=True)
-
-            # filtered_query_1, filtered_query_2 = create_filtered_queries(
-            #     args, input_path, table_column_dict)
-            # print(
-            #     f"Filtered query 1: {filtered_query_1}\n\nFiltered query 2: {filtered_query_2}\n")
-            # query_1_path = "./tmp_filtered_query_1.sql"
-            # query_2_path = "./tmp_filtered_query_2.sql"
-            # with open(query_1_path, 'w') as f:
-            #     f.write(filtered_query_1)
-            # with open(query_2_path, 'w') as f:
-            #     f.write(filtered_query_2)
-            shell_cmd = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d tpch -i {input_path}_0.sql -o {output_path}_0.txt'
-            print(shell_cmd)
-            subprocess.call(shell_cmd, shell=True)
-            shell_cmd = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d tpch -i {input_path}_1.sql -o {output_path}_1.txt'
-            print(shell_cmd)
-            subprocess.call(shell_cmd, shell=True)
+            for i in range(3):
+                run_shell_cmd(args, input_path, output_path, i)
 
 
 if __name__ == "__main__":
