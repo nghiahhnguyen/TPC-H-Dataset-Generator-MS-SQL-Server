@@ -24,7 +24,7 @@ from
 	nation,
 	region
 where
-	p_size > 1000 and
+	p_retailprice > 1000 and
 	p_partkey = ps_partkey
 	and s_suppkey = ps_suppkey
 	and p_size = :1
