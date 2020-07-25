@@ -181,10 +181,11 @@ if __name__ == "__main__":
     # iterate through columns and create index on them
     for table_name, column_list in table_column_dict.items():
         for column_name, _ in column_list:
+            if column_name == "skip":
+                continue
             command = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d tpch -Q "CREATE INDEX auto_idx_{count_db_indexes} ON {table_name}({column_name});"'
             print(command)
             subprocess.call(command, shell=True)
-            count_db_indexes += 1
             if args.showplan:
                 generate_showplans(train_indices, args,
                                    "train", table_column_dict, count_db_indexes)
@@ -192,4 +193,5 @@ if __name__ == "__main__":
                                    table_column_dict, count_db_indexes)
                 generate_showplans(test_indices, args,
                                    "test", table_column_dict, count_db_indexes)
+            count_db_indexes += 1
     drop_all_indexes(table_column_dict, args)

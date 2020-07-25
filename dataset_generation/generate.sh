@@ -1,4 +1,5 @@
 rm -rf ../dbgen/generated_queries
+rm -rf generated_equivalent_showplans/
 
 cd ../dbgen
 cp queries_filtered_0/* ./
