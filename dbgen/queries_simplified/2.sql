@@ -32,7 +32,7 @@ where
 	and n_regionkey = r_regionkey
 	and r_name = ':3'
 	and ps_supplycost = :1
-	order by
+order by
 	s_acctbal desc,
 	n_name,
 	s_name,
