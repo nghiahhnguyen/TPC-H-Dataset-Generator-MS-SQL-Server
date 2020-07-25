@@ -22,6 +22,8 @@ def extract_tables_columns(schema_path):
                     '[') + 1: column_str.find(']')]
                 column_data_type = column_str[column_str.rfind('[') + 1: column_str.rfind(']')]
                 column_name = column_name.lower()
+                if column_name == "skip":
+                    continue
                 table_column_dict[table_name].append((column_name, column_data_type))
                 print(column_name, column_data_type)
     return table_column_dict
