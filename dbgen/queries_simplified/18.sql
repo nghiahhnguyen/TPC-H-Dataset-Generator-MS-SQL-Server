@@ -1,3 +1,4 @@
+
 -- $ID$
 -- TPC-H/TPC-R Large Volume Customer Query (Q18)
 -- Function Query Definition
@@ -31,3 +32,5 @@ group by
 order by
 	o_totalprice desc,
 	o_orderdate;
+having
+	sum(l_quanity) > :1

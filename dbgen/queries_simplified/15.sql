@@ -6,31 +6,14 @@
 set showplan_all on;
 go
 
-create view revenue:s (supplier_no, total_revenue) as
-	select
-		l_suppkey,
-		sum(l_extendedprice * (1 - l_discount))
-	from
-		lineitem
-	where
-		l_shipdate >= cast(':1' as datetime)
-		and l_shipdate < dateadd(mm, 3, cast(':1' as datetime))
-	group by
-		l_suppkey;
-go
-:o
 select
-	s_suppkey,
-	s_name,
-	s_address,
-	s_phone,
-	total_revenue
+	l_suppkey,
+	sum(l_extendedprice * (1 - l_discount))
 from
-	supplier,
-	revenue:s
+	lineitem
 where
-	s_suppkey = supplier_no
-order by
-	s_suppkey;
-
-drop view revenue:s;
+	l_shipdate >= cast(':1' as datetime)
+	and l_shipdate < dateadd(mm, 3, cast(':1' as datetime))
+group by
+	l_suppkey;
+go

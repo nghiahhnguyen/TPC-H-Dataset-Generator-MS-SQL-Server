@@ -18,8 +18,6 @@ from
 where
 	p_partkey = ps_partkey
 	and p_brand <> ':1'
-	and p_type not like ':2%'
-	and p_size in (:3, :4, :5, :6, :7, :8, :9, :10)
 group by
 	p_brand,
 	p_type,

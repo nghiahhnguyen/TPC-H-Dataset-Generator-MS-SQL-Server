@@ -12,3 +12,4 @@ generated_showplans/*
 generated_shoplans/*
 generated_showplans/*
 *.tar.gz
+*.swap

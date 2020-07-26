@@ -27,8 +27,6 @@ where
 	and o_custkey = c_custkey
 	and c_nationkey = n1.n_nationkey
 	and n1.n_regionkey = r_regionkey
-	and r_name = ':2'
 	and s_nationkey = n2.n_nationkey
 	and o_orderdate between cast('1995-01-01' as datetime) and cast('1996-12-31' as datetime)
-	and p_type = ':3'
 go
