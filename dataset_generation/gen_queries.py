@@ -50,7 +50,7 @@ def generate_showplans(indices, args, split, directory='.'):
 if __name__ == "__main__":
     os.chdir('../dbgen')
     print(os.getcwd())
-    NUM_TEMPLATES = 22
+    NUM_TEMPLATES = 13
 
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument(
@@ -70,7 +70,8 @@ if __name__ == "__main__":
     arg_parser.add_argument("--filter", type=int)
     args = arg_parser.parse_args()
 
-    indices = list(range(1, NUM_TEMPLATES + 1))  # 22 query templates
+#     indices = list(range(1, NUM_TEMPLATES + 1))  # 22 query templates
+    indices = [1, 2, 3, 4, 5, 6, 7, 9, 10, 12, 15, 18, 19]
     random.seed("167")
     random.shuffle(indices)
     test_split = int(args.test_split * NUM_TEMPLATES)

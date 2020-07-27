@@ -21,6 +21,7 @@ from
 	orders,
 	lineitem
 where
+	c_acctbal > 100 and
 	c_custkey = o_custkey
 	and o_orderkey = l_orderkey
 group by

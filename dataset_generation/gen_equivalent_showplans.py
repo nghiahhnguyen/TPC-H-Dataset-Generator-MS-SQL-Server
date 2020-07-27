@@ -115,7 +115,7 @@ def drop_all_indexes(table_column_dict, args):
     count_drop_db_indexes = 0
     for table_name, column_list in table_column_dict.items():
         for _, _ in column_list:
-            command = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d tpch -Q "DROP INDEX {table_name}.auto_idx_{count_drop_db_indexes};"'
+            command = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d tpch -Q "DROP INDEX {table_name}.auto_idx_{count_drop_db_indexes}"'
             subprocess.call(command, shell=True)
             count_drop_db_indexes += 1
 
@@ -165,9 +165,10 @@ if __name__ == "__main__":
 
     os.chdir('../dbgen')
     print(os.getcwd())
-    NUM_TEMPLATES = 22
+    NUM_TEMPLATES = 13
 
-    indices = list(range(1, NUM_TEMPLATES + 1))  # 22 query templates
+#     indices = list(range(1, NUM_TEMPLATES + 1))  # 22 query templates
+    indices = [1, 2, 3, 4, 5, 6, 7, 9, 10, 12, 15, 18, 19]
     random.seed("167")
     random.shuffle(indices)
     test_split = int(args.test_split * NUM_TEMPLATES)
@@ -178,12 +179,14 @@ if __name__ == "__main__":
 
     # generate showplans
     count_db_indexes = 0
+    # drop all indexes
+    drop_all_indexes(table_column_dict, args)
     # iterate through columns and create index on them
     for table_name, column_list in table_column_dict.items():
         for column_name, _ in column_list:
             if column_name == "skip":
                 continue
-            command = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d tpch -Q "CREATE INDEX auto_idx_{count_db_indexes} ON {table_name}({column_name});"'
+            command = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d tpch -Q "create index auto_idx_{count_db_indexes} on {table_name}({column_name});"'
             print(command)
             subprocess.call(command, shell=True)
             if args.showplan:
@@ -194,4 +197,3 @@ if __name__ == "__main__":
                 generate_showplans(test_indices, args,
                                    "test", table_column_dict, count_db_indexes)
             count_db_indexes += 1
-    drop_all_indexes(table_column_dict, args)
