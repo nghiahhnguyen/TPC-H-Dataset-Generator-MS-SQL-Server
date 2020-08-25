@@ -19,4 +19,4 @@ where
 	and l_quantity >= :4 and l_quantity <= :4 + 10
 	and p_size between 1 and 5
 	and l_shipmode in ('AIR', 'AIR REG')
-	and l_shipinstruct = 'DELIVER IN PERSON'
+	and l_shipinstruct = 'DELIVER IN PERSON';

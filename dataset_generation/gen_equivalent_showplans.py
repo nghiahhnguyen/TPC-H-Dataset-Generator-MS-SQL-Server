@@ -168,7 +168,7 @@ if __name__ == "__main__":
     NUM_TEMPLATES = 13
 
 #     indices = list(range(1, NUM_TEMPLATES + 1))  # 22 query templates
-    indices = [1, 2, 3, 4, 5, 6, 7, 9, 10, 12, 15, 18, 19]
+    indices = [1, 2, 3, 4, 5, 6, 7, 10, 12, 14, 15, 18, 19]
     random.seed("167")
     random.shuffle(indices)
     test_split = int(args.test_split * NUM_TEMPLATES)

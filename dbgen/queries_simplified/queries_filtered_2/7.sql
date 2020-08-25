@@ -26,5 +26,5 @@ where
 	and c_custkey = o_custkey
 	and s_nationkey = n1.n_nationkey
 	and c_nationkey = n2.n_nationkey
-	and l_shipdate between cast('1995-01-01' as datetime) and cast('1996-12-31' as datetime)
+	and l_shipdate between cast('1995-01-01' as datetime) and cast('1996-12-31' as datetime);
 go
