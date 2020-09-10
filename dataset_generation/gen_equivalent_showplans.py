@@ -5,7 +5,7 @@ import subprocess
 import random
 from pathlib import Path
 
-from utils import extract_tables_columns
+from .utils import extract_tables_columns
 
 
 def extract_clauses(string):
@@ -130,8 +130,8 @@ def generate_showplans(indices, args, split, table_column_dict, count_db_indexes
     print(f"Current split: {split}")
 
     for template in indices:
+        input_directory = f"./generated_queries/{split}/{template}/"
         for count in range(args.num_queries):
-            input_directory = f"./generated_queries/{split}/{template}/"
             input_path = input_directory+f"{str(count)}"
             directory = f"../dataset_generation/generated_equivalent_showplans/{split}/template_{template}/config_{count_db_indexes}/"
             output_path = directory + str(count)
