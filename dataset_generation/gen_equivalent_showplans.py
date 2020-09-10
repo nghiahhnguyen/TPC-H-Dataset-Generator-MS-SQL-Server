@@ -111,13 +111,13 @@ def drop_all_indexes(table_column_dict, args):
     count_drop_db_indexes = 0
     for table_name, column_list in table_column_dict.items():
         for _, _ in column_list:
-            command = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d tpch -Q "DROP INDEX {table_name}.auto_idx_{count_drop_db_indexes}"'
+            command = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d {args.dataset} -Q "DROP INDEX {table_name}.auto_idx_{count_drop_db_indexes}"'
             subprocess.call(command, shell=True)
             count_drop_db_indexes += 1
 
 
 def run_shell_cmd(args, input_path, output_path, filter_idx):
-    shell_cmd = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d tpch -i {input_path}_{filter_idx}.sql -o {output_path}_{filter_idx}.txt'
+    shell_cmd = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d {args.dataset} -i {input_path}_{filter_idx}.sql -o {output_path}_{filter_idx}.txt'
     print(shell_cmd)
     subprocess.call(shell_cmd, shell=True)
 
@@ -135,6 +135,8 @@ def generate_showplans(indices, args, split, table_column_dict, count_db_indexes
                 Path(directory).mkdir(parents=True, exist_ok=True)
                 for i in range(3):
                     run_shell_cmd(args, input_path, output_path, i)
+    elif args.dataset == "imdbload":
+        indices = [i + 1 for i in range(33)]
     else:
         raise NotImplementedError
 
@@ -159,7 +161,7 @@ if __name__ == "__main__":
     arg_parser.add_argument("--input-directory", default=".", help="Path to the where the queries is")
     args = arg_parser.parse_args()
 
-    table_column_dict = extract_tables_columns(args.schema_path)
+    table_column_dict = extract_tables_columns(args.schema_path, args.dataset)
 
     os.chdir('../dbgen')
     print(os.getcwd())
@@ -184,7 +186,7 @@ if __name__ == "__main__":
         for column_name, _ in column_list:
             if column_name == "skip":
                 continue
-            command = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d tpch -Q "create index auto_idx_{count_db_indexes} on {table_name}({column_name});"'
+            command = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d {args.dataset} -Q "create index auto_idx_{count_db_indexes} on {table_name}({column_name});"'
             print(command)
             subprocess.call(command, shell=True)
             if args.showplan:
