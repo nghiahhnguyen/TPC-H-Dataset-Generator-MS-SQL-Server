@@ -95,9 +95,7 @@ def create_filtered_queries(args, input_path, table_column_dict):
                         filtered_query_1 = f"{query_options}\ngo\n{select_clause} from ({from_clause_1}) {split_keyword} {extra_filter_1} and {where_clause}"
                         filtered_query_2 = f"{query_options}\ngo\n{select_clause} from ({from_clause_2})  {split_keyword}where {extra_filter_2} and {where_clause}"
                         return filtered_query_1, filtered_query_2
-        # print("from_clause", from_clause)
         tables = from_clause.split(',')
-        # print(tables)
         for table in tables:
             table = table.strip()
             for column, column_data_type in table_column_dict[table]:
@@ -106,8 +104,6 @@ def create_filtered_queries(args, input_path, table_column_dict):
                     extra_filter_2 = f"{column} < {10}"
                     filtered_query_1 = f"{query_options}\ngo\n{select_from} where {extra_filter_1} and {where_clause}"
                     filtered_query_2 = f"{query_options}\ngo\n{select_from} where {extra_filter_2} and {where_clause}"
-                    # print(filtered_query_1)
-                    # print(filtered_query_2)
                     return filtered_query_1, filtered_query_2
 
 
@@ -129,15 +125,18 @@ def generate_showplans(indices, args, split, table_column_dict, count_db_indexes
     """Generate showplans from the list of queries"""
     print(f"Current split: {split}")
 
-    for template in indices:
-        input_directory = f"./generated_queries/{split}/{template}/"
-        for count in range(args.num_queries):
-            input_path = input_directory+f"{str(count)}"
-            directory = f"../dataset_generation/generated_equivalent_showplans/{split}/template_{template}/config_{count_db_indexes}/"
-            output_path = directory + str(count)
-            Path(directory).mkdir(parents=True, exist_ok=True)
-            for i in range(3):
-                run_shell_cmd(args, input_path, output_path, i)
+    if args.dataset == "tpch":
+        for template in indices:
+            input_directory = f"{args.input_directory}/generated_queries/{split}/{template}/"
+            for count in range(args.num_queries):
+                input_path = input_directory+f"{str(count)}"
+                directory = f"../dataset_generation/generated_equivalent_showplans/{split}/template_{template}/config_{count_db_indexes}/"
+                output_path = directory + str(count)
+                Path(directory).mkdir(parents=True, exist_ok=True)
+                for i in range(3):
+                    run_shell_cmd(args, input_path, output_path, i)
+    else:
+        raise NotImplementedError
 
 
 if __name__ == "__main__":
@@ -150,15 +149,14 @@ if __name__ == "__main__":
     arg_parser.add_argument(
         "--server", help="The server to run sqlcmd from", default="localhost")
     arg_parser.add_argument(
-        "--test_split", help="The percentage of templates to go into test set", default=0.2, type=float)
+        "--test-split", help="The percentage of templates to go into test set", default=0.2, type=float)
     arg_parser.add_argument(
-        "--dev_split", help="The percentage of templates to go into dev set", default=0.2, type=float)
+        "--dev-split", help="The percentage of templates to go into dev set", default=0.2, type=float)
     arg_parser.add_argument("--showplan", action="store_true", default=True)
     arg_parser.add_argument(
-        "--schema_path", help="Path to the schema", default="../tpc-h.sql")
-    # arg_parser.add_argument(
-    #     '--filter', type=int, help="The filter you want to apply", choices=[0, 1]
-    # )
+        "--schema-path", help="Path to the schema", default="../tpc-h.sql")
+    arg_parser.add_argument("--dataset", default="tpch", help="The dataset to choose", choices=["tpch", "imdbload"])
+    arg_parser.add_argument("--input-directory", default=".", help="Path to the where the queries is")
     args = arg_parser.parse_args()
 
     table_column_dict = extract_tables_columns(args.schema_path)
