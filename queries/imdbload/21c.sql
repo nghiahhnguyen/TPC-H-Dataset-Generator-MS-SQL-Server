@@ -1,3 +1,6 @@
+set showplan_all on;
+GO
+
 SELECT MIN(cn.name) AS company_name,
        MIN(lt.link) AS link_type,
        MIN(t.title) AS western_follow_up

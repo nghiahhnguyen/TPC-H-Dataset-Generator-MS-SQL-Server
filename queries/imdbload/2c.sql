@@ -1,3 +1,6 @@
+set showplan_all on;
+GO
+
 SELECT MIN(t.title) AS movie_title
 FROM company_name AS cn,
      keyword AS k,

@@ -1,3 +1,6 @@
+set showplan_all on;
+GO
+
 SELECT MIN(lt.link) AS link_type,
        MIN(t1.title) AS first_movie,
        MIN(t2.title) AS second_movie

@@ -98,7 +98,6 @@ def create_filtered_queries(args, input_path, table_column_dict):
 
 
 def extract_table_text(string):
-    print(string.split("CREATE TABLE"))
     string = list(string.split("CREATE TABLE"))
     table_column_dict = {}
     for table_string in string:
@@ -126,7 +125,7 @@ def extract_table_text(string):
 def extract_tables_columns(schema_path, dataset="tpch"):
     # get the string for each table
     if dataset == "imdbload":
-        with open("../schema/imdbload-postgres.sql") as f:
+        with open(schema_path) as f:
             string = f.read()
             table_column_dict = extract_table_text(string)
     elif dataset == "tpch":

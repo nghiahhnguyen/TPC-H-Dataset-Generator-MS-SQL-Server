@@ -1,3 +1,6 @@
+set showplan_all on;
+GO
+
 SELECT MIN(at.title) AS aka_title,
        MIN(t.title) AS internet_movie_title
 FROM aka_title AS at,

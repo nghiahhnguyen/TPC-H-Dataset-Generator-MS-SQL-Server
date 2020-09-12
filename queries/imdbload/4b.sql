@@ -1,3 +1,6 @@
+set showplan_all on;
+GO
+
 SELECT MIN(mi_idx.info) AS rating,
        MIN(t.title) AS movie_title
 FROM info_type AS it,

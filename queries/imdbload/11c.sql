@@ -1,3 +1,6 @@
+set showplan_all on;
+GO
+
 SELECT MIN(cn.name) AS from_company,
        MIN(mc.note) AS production_note,
        MIN(t.title) AS movie_based_on_book

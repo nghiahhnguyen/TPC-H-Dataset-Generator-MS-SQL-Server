@@ -1,3 +1,6 @@
+set showplan_all on;
+GO
+
 SELECT MIN(an.name) AS alternative_name,
        MIN(chn.name) AS character_name,
        MIN(t.title) AS movie

@@ -1,3 +1,6 @@
+set showplan_all on;
+GO
+
 SELECT MIN(chn.name) AS uncredited_voiced_character,
        MIN(t.title) AS russian_movie
 FROM char_name AS chn,

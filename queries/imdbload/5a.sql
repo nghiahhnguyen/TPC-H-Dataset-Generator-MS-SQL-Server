@@ -1,3 +1,6 @@
+set showplan_all on;
+GO
+
 SELECT MIN(t.title) AS typical_european_movie
 FROM company_type AS ct,
      info_type AS it,

@@ -13,3 +13,5 @@ generated_shoplans/*
 generated_showplans/*
 *.tar.gz
 *.swap
+dataset_generation/
+queries/imdbload_backup/

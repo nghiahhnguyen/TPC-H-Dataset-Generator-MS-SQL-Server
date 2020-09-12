@@ -1,3 +1,6 @@
+set showplan_all on;
+GO
+
 SELECT MIN(cn.name) AS movie_company,
        MIN(mi_idx.info) AS rating,
        MIN(t.title) AS mainstream_movie

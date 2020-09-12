@@ -1,3 +1,6 @@
+set showplan_all on;
+GO
+
 SELECT MIN(n.name) AS member_in_charnamed_movie,
        MIN(n.name) AS a1
 FROM cast_info AS ci,

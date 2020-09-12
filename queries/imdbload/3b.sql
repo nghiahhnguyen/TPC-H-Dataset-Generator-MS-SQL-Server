@@ -1,3 +1,6 @@
+set showplan_all on;
+GO
+
 SELECT MIN(t.title) AS movie_title
 FROM keyword AS k,
      movie_info AS mi,

@@ -1,3 +1,6 @@
+set showplan_all on;
+GO
+
 SELECT MIN(cn1.name) AS first_company,
        MIN(cn2.name) AS second_company,
        MIN(mi_idx1.info) AS first_rating,

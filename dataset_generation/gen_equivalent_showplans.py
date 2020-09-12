@@ -31,7 +31,7 @@ def generate_showplans(indices, args, split, table_column_dict, count_db_indexes
             input_directory = f"{args.input_directory}/generated_queries/{split}/{template}/"
             for count in range(args.num_queries):
                 input_path = input_directory+f"{str(count)}"
-                directory = f"../dataset_generation/generated_equivalent_showplans/{split}/template_{template}/config_{count_db_indexes}/"
+                directory = f"{os.path.dirname(__file__)}/generated_equivalent_showplans/{split}/template_{template}/config_{count_db_indexes}/"
                 output_path = directory + str(count)
                 Path(directory).mkdir(parents=True, exist_ok=True)
                 for i in range(3):
@@ -40,7 +40,7 @@ def generate_showplans(indices, args, split, table_column_dict, count_db_indexes
         for template in indices:
             template += 1
             for file_path in glob.glob(f"{args.input_directory}/{template}[a-z]*.sql"):
-                directory = f"../dataset_generation/generated_equivalent_showplans_imdbload/{split}/template_{template}/config_{count_db_indexes}/"
+                directory = f"{os.path.dirname(__file__)}/generated_equivalent_showplans_imdbload/{split}/template_{template}/config_{count_db_indexes}/"
 
                 # extract basename of the file
                 file_name = file_path[file_path.rfind("/")+1:]
@@ -79,12 +79,18 @@ if __name__ == "__main__":
 
     table_column_dict = extract_tables_columns(args.schema_path, args.dataset)
 
-    os.chdir('../dbgen')
+    if args.dataset == "tpch":
+        os.chdir('../dbgen')
     print(os.getcwd())
+
     NUM_TEMPLATES = 13
 
-#     indices = list(range(1, NUM_TEMPLATES + 1))  # 22 query templates
-    indices = [1, 2, 3, 4, 5, 6, 7, 10, 12, 14, 15, 18, 19]
+    # indices for simplified tpch
+    # indices = [1, 2, 3, 4, 5, 6, 7, 10, 12, 14, 15, 18, 19]
+
+    # indices for imdbload
+    indices = [i + 1 for i in range(33)]
+
     random.seed("167")
     random.shuffle(indices)
     test_split = int(args.test_split * NUM_TEMPLATES)

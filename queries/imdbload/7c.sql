@@ -1,3 +1,6 @@
+set showplan_all on;
+GO
+
 SELECT MIN(n.name) AS cast_member_name,
        MIN(pi.info) AS cast_member_info
 FROM aka_name AS an,

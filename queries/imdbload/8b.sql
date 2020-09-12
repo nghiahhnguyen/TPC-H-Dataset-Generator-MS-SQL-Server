@@ -1,3 +1,6 @@
+set showplan_all on;
+GO
+
 SELECT MIN(an.name) AS acress_pseudonym,
        MIN(t.title) AS japanese_anime_movie
 FROM aka_name AS an,

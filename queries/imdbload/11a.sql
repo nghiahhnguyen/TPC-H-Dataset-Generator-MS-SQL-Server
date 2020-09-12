@@ -1,3 +1,6 @@
+set showplan_all on;
+GO
+
 SELECT MIN(cn.name) AS from_company,
        MIN(lt.link) AS movie_link_type,
        MIN(t.title) AS non_polish_sequel_movie

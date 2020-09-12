@@ -1,3 +1,6 @@
+set showplan_all on;
+GO
+
 SELECT MIN(mi.info) AS movie_budget,
        MIN(mi_idx.info) AS movie_votes,
        MIN(t.title) AS movie_title
