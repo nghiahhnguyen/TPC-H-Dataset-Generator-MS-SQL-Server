@@ -38,7 +38,6 @@ def generate_showplans(indices, args, split, table_column_dict, count_db_indexes
                     run_shell_cmd(args, input_path, output_path, i)
     elif args.dataset == "imdbload":
         for template in indices:
-            template += 1
             for file_path in glob.glob(f"{args.input_directory}/{template}[a-z]*.sql"):
                 directory = f"{os.path.dirname(__file__)}/generated_equivalent_showplans_imdbload/{split}/template_{template}/config_{count_db_indexes}/"
 
