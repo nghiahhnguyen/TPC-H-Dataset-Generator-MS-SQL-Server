@@ -35,4 +35,4 @@ do
 done
 
 cd ../dataset_generation
-python3 gen_equivalent_showplans.py -U SA -P Nhhnghia@2889
+python3 gen_equivalent_showplans.py -U SA -P Nhhnghia@2889 --num_templates 13

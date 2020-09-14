@@ -11,7 +11,9 @@ from .utils import extract_tables_columns
 def drop_all_indexes(table_column_dict, args):
     count_drop_db_indexes = 0
     for table_name, column_list in table_column_dict.items():
-        for _, _ in column_list:
+        for column_name, column_data_type in column_list:
+            if column_name == "skip" or column_data_type == "text":
+                continue
             command = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d {args.dataset} -Q "DROP INDEX {table_name}.auto_idx_{count_drop_db_indexes}"'
             subprocess.call(command, shell=True)
             count_drop_db_indexes += 1
@@ -49,7 +51,7 @@ def generate_showplans(indices, args, split, table_column_dict, count_db_indexes
                 output_path = directory + file_name
                 Path(directory).mkdir(parents=True, exist_ok=True)
                 shell_cmd = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d {args.dataset} -i {file_path} -o {output_path}.txt'
-                print(shell_cmd)
+                # print(shell_cmd)
                 subprocess.call(shell_cmd, shell=True)
 
     else:
@@ -66,14 +68,15 @@ if __name__ == "__main__":
     arg_parser.add_argument(
         "--server", help="The server to run sqlcmd from", default="localhost")
     arg_parser.add_argument(
-        "--test-split", help="The percentage of templates to go into test set", default=0.2, type=float)
+        "--test-split", help="The percentage of templates to go into test set", default=0.3, type=float)
     arg_parser.add_argument(
-        "--dev-split", help="The percentage of templates to go into dev set", default=0.2, type=float)
+        "--dev-split", help="The percentage of templates to go into dev set", default=0.3, type=float)
     arg_parser.add_argument("--showplan", action="store_true", default=True)
     arg_parser.add_argument(
         "--schema-path", help="Path to the schema", default="../tpc-h.sql")
     arg_parser.add_argument("--dataset", default="tpch", help="The dataset to choose", choices=["tpch", "imdbload"])
     arg_parser.add_argument("--input-directory", default=".", help="Path to the where the queries is")
+    arg_parser.add_argument("--num-templates", help="Number of templates", type=int)
     args = arg_parser.parse_args()
 
     table_column_dict = extract_tables_columns(args.schema_path, args.dataset)
@@ -81,8 +84,6 @@ if __name__ == "__main__":
     if args.dataset == "tpch":
         os.chdir('../dbgen')
     print(os.getcwd())
-
-    NUM_TEMPLATES = 13
 
     # indices for simplified tpch
     # indices = [1, 2, 3, 4, 5, 6, 7, 10, 12, 14, 15, 18, 19]
@@ -92,8 +93,8 @@ if __name__ == "__main__":
 
     random.seed("167")
     random.shuffle(indices)
-    test_split = int(args.test_split * NUM_TEMPLATES)
-    dev_split = test_split + int(args.dev_split * NUM_TEMPLATES)
+    test_split = int(args.test_split * args.num_templates)
+    dev_split = test_split + int(args.dev_split * args.num_templates)
     test_indices = indices[:test_split]
     dev_indices = indices[test_split:dev_split]
     train_indices = indices[dev_split:]
@@ -111,10 +112,7 @@ if __name__ == "__main__":
             print(command)
             subprocess.call(command, shell=True)
             if args.showplan:
-                generate_showplans(train_indices, args,
-                                   "train", table_column_dict, count_db_indexes)
-                generate_showplans(dev_indices, args, "dev",
-                                   table_column_dict, count_db_indexes)
-                generate_showplans(test_indices, args,
-                                   "test", table_column_dict, count_db_indexes)
+                generate_showplans(train_indices, args, "train", table_column_dict, count_db_indexes)
+                generate_showplans(dev_indices, args, "dev",table_column_dict, count_db_indexes)
+                generate_showplans(test_indices, args, "test", table_column_dict, count_db_indexes)
             count_db_indexes += 1
