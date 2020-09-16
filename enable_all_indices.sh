@@ -1,0 +1,1 @@
+python3 enable_all_indices.py -U SA -P Nhhnghia^2889 --schema-path ./schema/imdbload-postgres.sql --dataset imdbload
