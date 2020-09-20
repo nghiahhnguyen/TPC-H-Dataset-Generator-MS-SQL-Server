@@ -28,11 +28,21 @@ def generate_showplans(indices, args, split, table_column_dict, count_db_indexes
     """Generate showplans from the list of queries"""
     print(f"Current split: {split}")
 
+    extra_statistics_query = "SET SHOWPLAN_ALL ON\nGO\n\n"
+
     if args.dataset == "tpch":
         for template in indices:
             input_directory = f"{args.input_directory}/generated_queries/{split}/{template}/"
             for count in range(args.num_queries):
                 input_path = input_directory+f"{str(count)}"
+
+                # add extra statistics
+                with open(input_path, "r") as f:
+                    string = f.read()
+                string = extra_statistics_query + string
+                with open(input_path, "w") as f:
+                    f.write(string)
+
                 directory = f"{os.path.dirname(__file__)}/generated_equivalent_showplans/{split}/template_{template}/config_{count_db_indexes}/"
                 output_path = directory + str(count)
                 Path(directory).mkdir(parents=True, exist_ok=True)
@@ -40,17 +50,24 @@ def generate_showplans(indices, args, split, table_column_dict, count_db_indexes
                     run_shell_cmd(args, input_path, output_path, i)
     elif args.dataset == "imdbload":
         for template in indices:
-            for file_path in glob.glob(f"{args.input_directory}/{template}[a-z]*.sql"):
+            for input_path in glob.glob(f"{args.input_directory}/{template}[a-z]*.sql"):
                 directory = f"{os.path.dirname(__file__)}/generated_equivalent_showplans_imdbload/{split}/template_{template}/config_{count_db_indexes}/"
+                
+                # add extra statistics
+                with open(input_path, "r") as f:
+                    string = f.read()
+                string = extra_statistics_query + string
+                with open(input_path, "w") as f:
+                    f.write(string)
 
                 # extract basename of the file
-                file_name = file_path[file_path.rfind("/")+1:]
+                file_name = input_path[input_path.rfind("/")+1:]
                 # remove the extension
                 file_name = file_name[:-4]
 
                 output_path = directory + file_name
                 Path(directory).mkdir(parents=True, exist_ok=True)
-                shell_cmd = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d {args.dataset} -i {file_path} -o {output_path}.txt'
+                shell_cmd = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d {args.dataset} -i {input_path} -o {output_path}.txt'
                 # print(shell_cmd)
                 subprocess.call(shell_cmd, shell=True)
 
