@@ -68,10 +68,14 @@ if __name__ == "__main__":
                             action="store_true", default=False)
     arg_parser.add_argument("--showplan", action="store_true", default=False)
     arg_parser.add_argument("--filter", type=int)
+    arg_parser.add_argument("--dataset", choices=("tpch", "tpcds"))
     args = arg_parser.parse_args()
 
 #     indices = list(range(1, NUM_TEMPLATES + 1))  # 22 query templates
-    indices = [1, 2, 3, 4, 5, 6, 7, 10, 12, 14, 15, 18, 19]
+    if args.dataset == "tpch":
+        indices = [1, 2, 3, 4, 5, 6, 7, 10, 12, 14, 15, 18, 19]
+    else:
+        indices = [1, 3, 4, 6, 7, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
     random.seed("167")
     random.shuffle(indices)
     test_split = int(args.test_split * NUM_TEMPLATES)

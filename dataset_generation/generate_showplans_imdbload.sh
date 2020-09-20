@@ -1,0 +1,1 @@
+python3 -m  dataset_generation.gen_equivalent_showplans --user SA --password Nhhnghia^2889 --schema-path ./schema/imdbload-postgres.sql --dataset imdbload --input-directory ./queries/imdbload --num-templates 33
