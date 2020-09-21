@@ -1,1 +1,1 @@
-python3 -m  dataset_generation.gen_equivalent_showplans --user SA --password Nhhnghia^2889 --schema-path ./schema/tpcds.sql --dataset tpcds --input-directory ./generated_queries_tpcds
+python3 -m  dataset_generation.gen_equivalent_showplans --user SA --password Nhhnghia^2889 --schema-path ./schema/tpcds.sql --dataset tpcds --input-directory ./generated_queries_tpcds --reduce-configs --num-queries 10

@@ -97,7 +97,7 @@ def create_filtered_queries(args, input_path, table_column_dict):
                     return filtered_query_1, filtered_query_2
 
 
-def extract_table_text(string):
+def extract_table_text(string, dataset):
     string = list(string.split("CREATE TABLE"))
     table_column_dict = {}
     for table_string in string:
@@ -109,8 +109,20 @@ def extract_table_text(string):
         table_header = table_string[:start].strip()
         table_column_dict[table_header] = []
         print(table_header, table_content)
-        for column_string in table_content.split(","):
-            column_strings = column_string.strip().split()
+        if dataset == "tpch":
+            separator = ","
+        elif dataset == "tpcds":
+            separator = "\n"
+        for column_string in table_content.split(separator):
+            if len(column_string) == 0:
+                continue
+            if column_string[-1] == ",":
+                column_string = column_string[:-1]
+            column_strings = column_string.strip()
+            if column_strings.find("PRIMARY KEY") == 0:
+                break
+            column_strings = column_strings.split()
+            print(column_strings)
             column_name = column_strings[0]
             column_data_type = column_strings[1]
             table_column_dict[table_header].append(
@@ -124,10 +136,10 @@ def extract_table_text(string):
 
 def extract_tables_columns(schema_path, dataset="tpch"):
     # get the string for each table
-    if dataset == "imdbload":
+    if dataset in ("imdbload", "tpcds"):
         with open(schema_path) as f:
             string = f.read()
-            table_column_dict = extract_table_text(string)
+            table_column_dict = extract_table_text(string, dataset)
     elif dataset == "tpch":
         table_column_dict = {}
         with open(schema_path, "r") as f:

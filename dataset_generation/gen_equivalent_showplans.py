@@ -33,37 +33,47 @@ def restore_statistics(input_path, original_string):
     with open(input_path, "w") as f:
         f.write(original_string)
 
-def run_shell_cmd(args, input_path, output_path, filter_idx=None):
+def run_shell_cmd(args, input_path, output_path, output_directory, column_name, filter_idx=None):
     extra_filter_file_name = ""
     if filter_idx != None:
         extra_filter_file_name = f"_{filter_idx}"
     
     full_input_path = f"{input_path}{extra_filter_file_name}.sql"
+
+    if args.reduce_configs:
+        with open(full_input_path, "r") as f:
+            string = f.read()
+            if column_name not in string:
+                return
+
+    Path(output_directory).mkdir(parents=True, exist_ok=True)
     original_string = add_statistics(full_input_path)
     shell_cmd = f'sqlcmd -S {args.server} -U {args.user} -P {args.password} -d {args.dataset} -i {full_input_path} -o {output_path}{extra_filter_file_name}.txt'
     print(shell_cmd)
     subprocess.call(shell_cmd, shell=True)
     restore_statistics(full_input_path, original_string)
 
-def generate_showplans(indices, args, split, table_column_dict, count_db_indexes, directory='.'):
+def generate_showplans(indices, args, split, table_column_dict, count_db_indexes, column_name, directory='.'):
     """Generate showplans from the list of queries"""
     print(f"Current split: {split}")
 
     if args.dataset in ("tpch", "tpcds"):
         for template in indices:
-            input_directory = f"{args.input_directory}/generated_queries/{split}/{template}"
+            if args.dataset == "tpch":
+                input_directory = f"{args.input_directory}/generated_queries/{split}/{template}"
+            else:
+                input_directory = f"{args.input_directory}/{split}/{template}"
             for count in range(args.num_queries):
                 input_path = f"{input_directory}/{str(count)}"
 
-                directory = f"{os.path.dirname(__file__)}/generated_equivalent_showplans/{split}/template_{template}/config_{count_db_indexes}/"
+                directory = f"{os.path.dirname(__file__)}/generated_equivalent_showplans_{args.dataset}/{split}/template_{template}/config_{count_db_indexes}/"
                 output_path = directory + str(count)
-                Path(directory).mkdir(parents=True, exist_ok=True)
 
                 if args.dataset == "tpch":
                     for i in range(3):
-                        run_shell_cmd(args, input_path, output_path, i)
+                        run_shell_cmd(args, input_path, output_path, directory, column_name, i)
                 else:
-                    run_shell_cmd(args, input_path, output_path)
+                    run_shell_cmd(args, input_path, output_path, directory, column_name)
 
                 
     elif args.dataset == "imdbload":
@@ -95,20 +105,21 @@ if __name__ == "__main__":
     arg_parser.add_argument(
         "-U", "--user", help="db administrator", default="SA")
     arg_parser.add_argument("-P", "--password", help="password")
-    arg_parser.add_argument("--num_queries",
+    arg_parser.add_argument("--num-queries",
                             help="Number of queries to generate per template", default=10, type=int)
     arg_parser.add_argument(
         "--server", help="The server to run sqlcmd from", default="localhost")
     arg_parser.add_argument(
-        "--test-split", help="The percentage of templates to go into test set", default=0.3, type=float)
+        "--test-split", help="The percentage of templates to go into test set", default=0.2, type=float)
     arg_parser.add_argument(
-        "--dev-split", help="The percentage of templates to go into dev set", default=0.3, type=float)
+        "--dev-split", help="The percentage of templates to go into dev set", default=0.2, type=float)
     arg_parser.add_argument("--showplan", action="store_true", default=True)
     arg_parser.add_argument(
         "--schema-path", help="Path to the schema", default="../tpc-h.sql")
     arg_parser.add_argument("--dataset", default="tpch", help="The dataset to choose", choices=["tpch", "imdbload", "tpcds"])
     arg_parser.add_argument("--input-directory", default=".", help="Path to the where the queries is")
     arg_parser.add_argument("--num-templates", help="Number of templates", type=int)
+    arg_parser.add_argument("--reduce-configs", help="Whether to only generate necessary configurations for each query", action="store_true")
     args = arg_parser.parse_args()
 
     table_column_dict = extract_tables_columns(args.schema_path, args.dataset)
@@ -150,7 +161,7 @@ if __name__ == "__main__":
             print(command)
             subprocess.call(command, shell=True)
             if args.showplan:
-                generate_showplans(train_indices, args, "train", table_column_dict, count_db_indexes)
-                generate_showplans(dev_indices, args, "dev",table_column_dict, count_db_indexes)
-                generate_showplans(test_indices, args, "test", table_column_dict, count_db_indexes)
+                generate_showplans(train_indices, args, "train", table_column_dict, count_db_indexes, column_name)
+                generate_showplans(dev_indices, args, "dev",table_column_dict, count_db_indexes, column_name)
+                generate_showplans(test_indices, args, "test", table_column_dict, count_db_indexes, column_name)
             count_db_indexes += 1
